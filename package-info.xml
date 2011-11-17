@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE package-info SYSTEM "http://www.simplemachines.org/xml/package-info">
+<package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
+	<license>
+<!--
+/**
+ * Auto Prune Moved Topics (apmt)
+ *
+ * @package apmt
+ * @author emanuele
+ * @copyright 2011 emanuele, Simple Machines
+ * @license http://www.simplemachines.org/about/smf/license.php BSD
+ *
+ * @version 0.1.0
+ */
+-->
+	</license>
+	<name>Auto Prune Moved Topics</name>
+	<id>emanuele:autoprune_movedtopics</id>
+	<version>0.1.0</version>
+	<type>modification</type>
+	<install for="2.0 - 2.99.99">
+		<modification type="file">modifications.xml</modification>
+		<database>installScript.php</database>
+	</install>
+	<uninstall for="2.0 - 2.99.99">
+		<modification reverse="true">modifications.xml</modification>
+		<database>installScript.php</database>
+	</uninstall>
+</package-info>
