@@ -30,7 +30,7 @@ function apmt_add_settings (&$config_vars)
 		$_POST['apmt_taskFrequency'] = (int) $_POST['apmt_taskFrequency'];
 		$_POST['apmt_taskFrequency'] = empty($_POST['apmt_taskFrequency']) ? 15 : $_POST['apmt_taskFrequency'];
 		$_POST['apmt_numberOfBoards'] = (int) $_POST['apmt_numberOfBoards'];
-		$_POST['apmt_numberOfBoards'] = empty($_POST['apmt_numberOfBoards']) ? 15 : $_POST['apmt_numberOfBoards'];
+		$_POST['apmt_numberOfBoards'] = empty($_POST['apmt_numberOfBoards']) ? 5 : $_POST['apmt_numberOfBoards'];
 		$smcFunc['db_query']('', '
 			UPDATE {db_prefix}scheduled_tasks
 			SET time_regularity = {int:taskFrequency}
