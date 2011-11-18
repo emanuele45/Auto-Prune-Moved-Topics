@@ -19,4 +19,86 @@
 	<id>emanuele:autoprune_movedtopics</id>
 	<version>0.1.0</version>
 
+	<file name="$sourcedir/ManageBoards.php">
+		<operation><!-- 1 -->
+			<search position="before"><![CDATA[
+			'no_children' => true,]]></search>
+			<add><![CDATA[
+			'apmt_prune_frequency' => 30,]]></add>
+		</operation>
+		<operation><!-- 2 -->
+			<search position="before"><![CDATA[
+		$context['board']['no_children'] = empty($boards[$_REQUEST['boardid']]['tree']['children']);]]></search>
+			<add><![CDATA[
+		$context['board']['apmt_prune_frequency'] = !empty($boards[$_REQUEST['boardid']]['apmt_prune_frequency']) ? $boards[$_REQUEST['boardid']]['apmt_prune_frequency'] : 0;]]></add>
+		</operation>
+		<operation><!-- 3 -->
+			<search position="before"><![CDATA[
+		$boardOptions['redirect'] = !empty($_POST['redirect_enable']) && isset($_POST['redirect_address']) && trim($_POST['redirect_address']) != '' ? trim($_POST['redirect_address']) : '';]]></search>
+			<add><![CDATA[
+
+		// Auto pruning
+		$boardOptions['apmt_prune_frequency'] = (int) $_POST['apmt_prune_frequency'];]]></add>
+		</operation>
+	</file>
+
+	<file name="$sourcedir/Subs-Boards.php">
+		<operation><!-- 1 -->
+			<search position="before"><![CDATA[
+			b.num_posts, b.num_topics, c.id_cat, c.name AS cat_name, c.cat_order, c.can_collapse]]></search>
+			<add><![CDATA[, b.prune_frequency]]></add>
+		</operation>
+		<operation><!-- 2 -->
+			<search position="before"><![CDATA[
+				'prev_board' => $prevBoard]]></search>
+			<add><![CDATA[,
+				'apmt_prune_frequency' => (int) ($row['prune_frequency'] / (24 * 60 * 60))]]></add>
+		</operation>
+		<operation><!-- 3 -->
+			<search position="after"><![CDATA[	// Do the updates (if any).]]></search>
+			<add><![CDATA[	if (isset($boardOptions['apmt_prune_frequency']))
+	{
+		$boardUpdates[] = 'prune_frequency = {int:prune_frequency}';
+		$boardUpdates[] = 'last_pruned = {int:last_pruned}';
+		$boardUpdateParameters['prune_frequency'] = $boardOptions['apmt_prune_frequency'] * 24 * 60 * 60;
+		$boardUpdateParameters['prune_frequency'] = time();
+	}
+
+]]></add>
+		</operation>
+	</file>
+
+	<file name="$themedir/ManageBoards.template.php">
+		<operation><!-- 1 -->
+			<search position="before"><![CDATA[
+	echo '
+					<div id="count_posts_div">
+						<dl class="settings">
+							<dt>
+								<strong>', $txt['mboards_count_posts'], ':</strong><br />
+								<span class="smalltext">', $txt['mboards_count_posts_desc'], '</span><br />
+							</dt>
+							<dd>
+								<input type="checkbox" name="count" ', $context['board']['count_posts'] ? ' checked="checked"' : '', ' class="input_check" />
+							</dd>
+						</dl>
+					</div>';
+]]></search>
+			<add><![CDATA[
+	echo '
+					<div id="apmt_prune_frequency">
+						<dl class="settings">
+							<dt>
+								<strong>', $txt['apmt_prune_frequency'], ':</strong><br />
+								<span class="smalltext">', $txt['apmt_prune_frequency_desc'], '</span><br />
+							</dt>
+							<dd>
+								<input type="text" name="apmt_prune_frequency" value="', $context['board']['apmt_prune_frequency'], '" size="10" class="input_text" />
+							</dd>
+						</dl>
+					</div>';
+]]></add>
+		</operation>
+	</file>
+
 </modification>

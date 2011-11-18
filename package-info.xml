@@ -19,12 +19,19 @@
 	<id>emanuele:autoprune_movedtopics</id>
 	<version>0.1.0</version>
 	<type>modification</type>
-	<install for="2.0 - 2.99.99">
+	<install for="2.0 - 2.0.99">
 		<modification type="file">modifications.xml</modification>
+		<modification type="file">language.xml</modification>
+		<modification type="file">language-utf8.xml</modification>
+		<require-file name="Subs-AutoPruneMoved.php" destination="$sourcedir" />
+		<code>installHooks.php</code>
 		<database>installScript.php</database>
 	</install>
-	<uninstall for="2.0 - 2.99.99">
+	<uninstall for="2.0 - 2.0.99">
 		<modification reverse="true">modifications.xml</modification>
-		<database>installScript.php</database>
+		<modification reverse="true">language.xml</modification>
+		<modification reverse="true">language-utf8.xml</modification>
+		<remove-file name="$sourcedir/Subs-AutoPruneMoved.php" />
+		<code>installHooks.php</code>
 	</uninstall>
 </package-info>

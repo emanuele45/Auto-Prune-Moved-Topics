@@ -20,11 +20,18 @@ else
 db_extend('Packages');
 
 $smcFunc['db_add_column'](
-	'{db_prefix}pm_recipients',
+	'{db_prefix}boards',
 	array(
-		'name' => 'cc',
-		'type' => 'tinyint',
-		'size' => 3,
+		'name' => 'last_pruned',
+		'type' => 'int',
+		'default' => 0
+));
+
+$smcFunc['db_add_column'](
+	'{db_prefix}boards',
+	array(
+		'name' => 'prune_frequency',
+		'type' => 'int',
 		'default' => 0
 ));
 
